@@ -9,5 +9,4 @@ public class RocketsServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RocketsServiceApplication.class, args);
 	}
-
 }
