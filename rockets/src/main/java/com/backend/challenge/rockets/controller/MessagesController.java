@@ -1,30 +1,22 @@
 package com.backend.challenge.rockets.controller;
 
-import com.backend.challenge.rockets.messages.MessageRequest;
-import com.backend.challenge.rockets.service.RocketsService;
-import org.springframework.http.ResponseEntity;
+import com.backend.challenge.rockets.messages.Message;
+import com.backend.challenge.rockets.service.MessageProducerService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/messages")
 public class MessagesController {
 
-    private final RocketsService rocketsService;
+    private final MessageProducerService rocketsService;
 
-    public MessagesController(RocketsService rocketsService) {
+    public MessagesController(MessageProducerService rocketsService) {
         this.rocketsService = rocketsService;
     }
 
     @PostMapping
-    public void publish(@Valid @RequestBody MessageRequest messageRequest) {
-        rocketsService.addRocket(messageRequest);
+    public void publish(@Valid @RequestBody Message message) {
+        rocketsService.addRocket(message);
     }
-
-    /*@GetMapping(path = "{channel}")
-    public ResponseEntity<ProgramDto> get(@PathVariable("channel") String channel) {
-
-    }*/
 }

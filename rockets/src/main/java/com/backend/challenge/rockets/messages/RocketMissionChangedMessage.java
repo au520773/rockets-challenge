@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data()
 @EqualsAndHashCode(callSuper = true)
-public class RocketMissionChangedMessage extends Message {
+public class RocketMissionChangedMessage extends RocketMessage {
     private String newMission;
 }
