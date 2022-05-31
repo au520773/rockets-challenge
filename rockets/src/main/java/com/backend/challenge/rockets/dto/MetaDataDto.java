@@ -1,11 +1,11 @@
-package com.backend.challenge.rockets.model;
+package com.backend.challenge.rockets.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class MetaData {
+public class MetaDataDto {
     @NotNull private String channel;
     private Integer messageNumber;
     private String messageTime;

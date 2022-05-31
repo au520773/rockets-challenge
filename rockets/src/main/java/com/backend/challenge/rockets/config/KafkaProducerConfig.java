@@ -1,6 +1,6 @@
 package com.backend.challenge.rockets.config;
 
-import com.backend.challenge.rockets.model.Message;
+import com.backend.challenge.rockets.dto.MessageDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,13 +26,13 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Message> producerFactory() {
+    public ProducerFactory<String, MessageDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, Message> kafkaTemplate(
-            ProducerFactory<String, Message> producerFactory
+    public KafkaTemplate<String, MessageDto> kafkaTemplate(
+            ProducerFactory<String, MessageDto> producerFactory
     ) {
         return new KafkaTemplate<>(producerFactory);
     }

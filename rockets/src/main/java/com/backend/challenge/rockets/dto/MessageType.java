@@ -1,4 +1,4 @@
-package com.backend.challenge.rockets.model;
+package com.backend.challenge.rockets.dto;
 
 import com.backend.challenge.rockets.exception.InternalServerErrorException;
 import lombok.Getter;

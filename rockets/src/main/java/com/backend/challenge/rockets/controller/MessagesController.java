@@ -1,6 +1,6 @@
 package com.backend.challenge.rockets.controller;
 
-import com.backend.challenge.rockets.model.Message;
+import com.backend.challenge.rockets.dto.MessageDto;
 import com.backend.challenge.rockets.service.MessageProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class MessagesController {
     private final MessageProducerService rocketsService;
 
     @PostMapping
-    public void publish(@Valid @RequestBody Message message) {
-        rocketsService.addMessage(message);
+    public void publish(@Valid @RequestBody MessageDto messageDto) {
+        rocketsService.addMessage(messageDto);
     }
 }

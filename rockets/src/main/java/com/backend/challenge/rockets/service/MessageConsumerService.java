@@ -2,12 +2,12 @@ package com.backend.challenge.rockets.service;
 
 import com.backend.challenge.rockets.util.ConversionUtil;
 import com.backend.challenge.rockets.exception.InternalServerErrorException;
-import com.backend.challenge.rockets.model.Message;
-import com.backend.challenge.rockets.model.RocketExplodedMessage;
-import com.backend.challenge.rockets.model.RocketLaunchedMessage;
-import com.backend.challenge.rockets.model.RocketMissionChangedMessage;
-import com.backend.challenge.rockets.model.RocketSpeedChangedMessage;
-import com.backend.challenge.rockets.model.MessageType;
+import com.backend.challenge.rockets.dto.MessageDto;
+import com.backend.challenge.rockets.dto.RocketExplodedMessageDtoDto;
+import com.backend.challenge.rockets.dto.RocketLaunchedMessageDtoDto;
+import com.backend.challenge.rockets.dto.RocketMissionChangedMessageDto;
+import com.backend.challenge.rockets.dto.RocketSpeedChangedMessageDto;
+import com.backend.challenge.rockets.dto.MessageType;
 import com.backend.challenge.rockets.entity.Rocket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,37 +25,37 @@ public class MessageConsumerService {
             groupId = "groupId"
     )
     void listener(String data) {
-        Message message = ConversionUtil.jsonToObject(data, Message.class, () -> "failed to deserialize message data");
+        MessageDto messageDto = ConversionUtil.jsonToObject(data, MessageDto.class, () -> "failed to deserialize message data");
 
-        switch (MessageType.of(message.getMetadata().getMessageType())) {
+        switch (MessageType.of(messageDto.getMetadata().getMessageType())) {
             case ROCKET_LAUNCHED -> {
-                handleRocketLaunch(message);
+                handleRocketLaunch(messageDto);
             }
             case ROCKET_SPEED_INCREASED -> {
-                handleRocketSpeedIncrease(message);
+                handleRocketSpeedIncrease(messageDto);
             }
             case ROCKET_SPEED_DECREASED -> {
-                handleRocketSpeedDecrease(message);
+                handleRocketSpeedDecrease(messageDto);
             }
             case ROCKET_MISSION_CHANGED -> {
-                handleRocketMissionChange(message);
+                handleRocketMissionChange(messageDto);
             }
             case ROCKET_EXPLODED -> {
-                handleRocketExplosion(message);
+                handleRocketExplosion(messageDto);
             }
             default -> throw new InternalServerErrorException("Invalid messageType");
         }
     }
 
-    private void handleRocketLaunch(Message message) {
-        RocketLaunchedMessage rocketLaunchedMessage = (RocketLaunchedMessage) message.getMessage();
+    private void handleRocketLaunch(MessageDto messageDto) {
+        RocketLaunchedMessageDtoDto rocketLaunchedMessageDto = (RocketLaunchedMessageDtoDto) messageDto.getMessage();
 
         Rocket rocket = Rocket.builder()
-                .channel(message.getMetadata().getChannel())
+                .channel(messageDto.getMetadata().getChannel())
                 .status("Alive")
-                .type(rocketLaunchedMessage.getType())
-                .speed(rocketLaunchedMessage.getLaunchSpeed())
-                .mission(rocketLaunchedMessage.getMission())
+                .type(rocketLaunchedMessageDto.getType())
+                .speed(rocketLaunchedMessageDto.getLaunchSpeed())
+                .mission(rocketLaunchedMessageDto.getMission())
                 .build();
 
         log.info("Creating rocket {}", rocket.getChannel());
@@ -63,50 +63,50 @@ public class MessageConsumerService {
         rocketsService.create(rocket);
     }
 
-    private void handleRocketSpeedIncrease(Message message) {
-        RocketSpeedChangedMessage rocketSpeedChangedMessage = (RocketSpeedChangedMessage) message.getMessage();
+    private void handleRocketSpeedIncrease(MessageDto messageDto) {
+        RocketSpeedChangedMessageDto rocketSpeedChangedMessage = (RocketSpeedChangedMessageDto) messageDto.getMessage();
 
-        log.info("Increasing speed of rocket {}", message.getMetadata().getChannel());
+        log.info("Increasing speed of rocket {}", messageDto.getMetadata().getChannel());
 
         rocketsService.update(
-                message.getMetadata().getChannel(),
+                messageDto.getMetadata().getChannel(),
                 (rocketToUpdate) -> rocketToUpdate.setSpeed(rocketToUpdate.getSpeed() + rocketSpeedChangedMessage.getBy())
         );
     }
 
-    private void handleRocketSpeedDecrease(Message message) {
-        RocketSpeedChangedMessage rocketSpeedChangedMessage = (RocketSpeedChangedMessage) message.getMessage();
+    private void handleRocketSpeedDecrease(MessageDto messageDto) {
+        RocketSpeedChangedMessageDto rocketSpeedChangedMessage = (RocketSpeedChangedMessageDto) messageDto.getMessage();
 
-        log.info("Decreasing speed of rocket {}", message.getMetadata().getChannel());
+        log.info("Decreasing speed of rocket {}", messageDto.getMetadata().getChannel());
 
         rocketsService.update(
-                message.getMetadata().getChannel(),
+                messageDto.getMetadata().getChannel(),
                 (rocketToUpdate) -> rocketToUpdate.setSpeed(rocketToUpdate.getSpeed() - rocketSpeedChangedMessage.getBy())
         );
     }
 
-    private void handleRocketMissionChange(Message message) {
-        RocketMissionChangedMessage rocketMissionChangedMessage = (RocketMissionChangedMessage) message.getMessage();
+    private void handleRocketMissionChange(MessageDto messageDto) {
+        RocketMissionChangedMessageDto rocketMissionChangedMessage = (RocketMissionChangedMessageDto) messageDto.getMessage();
 
-        log.info("Changing mission of rocket {}", message.getMetadata().getChannel());
+        log.info("Changing mission of rocket {}", messageDto.getMetadata().getChannel());
 
         rocketsService.update(
-                message.getMetadata().getChannel(),
+                messageDto.getMetadata().getChannel(),
                 (rocketToUpdate) -> rocketToUpdate.setMission(rocketMissionChangedMessage.getNewMission())
         );
     }
 
-    private void handleRocketExplosion(Message message) {
-        RocketExplodedMessage rocketExplodedMessage = (RocketExplodedMessage) message.getMessage();
+    private void handleRocketExplosion(MessageDto messageDto) {
+        RocketExplodedMessageDtoDto rocketExplodedMessageDto = (RocketExplodedMessageDtoDto) messageDto.getMessage();
 
-        log.info("Explosion of rocket {}", message.getMetadata().getChannel());
+        log.info("Explosion of rocket {}", messageDto.getMetadata().getChannel());
 
         rocketsService.update(
-                message.getMetadata().getChannel(),
+                messageDto.getMetadata().getChannel(),
                 (rocketToUpdate) -> rocketToUpdate.setStatus(
                         String.format("Rocket exploded at %s due to %s",
-                                message.getMetadata().getMessageTime(),
-                                rocketExplodedMessage.getReason()
+                                messageDto.getMetadata().getMessageTime(),
+                                rocketExplodedMessageDto.getReason()
                         )
                 )
         );

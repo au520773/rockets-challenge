@@ -5,6 +5,8 @@ import com.backend.challenge.rockets.entity.Rocket;
 import com.backend.challenge.rockets.repository.RocketsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,8 +20,16 @@ public class RocketsService {
 
     private final RocketsRepository rocketsRepository;
 
-    public List<Rocket> getAll() {
-        return rocketsRepository.findAll();
+    public List<Rocket> getAll(String sortBy) {
+        if (sortBy == null) {
+            return rocketsRepository.findAll();
+        }
+
+        try {
+            return rocketsRepository.findAll(Sort.by(Sort.Direction.ASC, sortBy));
+        } catch (PropertyReferenceException e) {
+            return rocketsRepository.findAll();
+        }
     }
 
     public Rocket getByChannel(String channel) {

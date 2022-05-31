@@ -1,10 +1,10 @@
-package com.backend.challenge.rockets.model;
+package com.backend.challenge.rockets.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data()
 @EqualsAndHashCode(callSuper = true)
-public class RocketMissionChangedMessage extends RocketMessage {
+public class RocketMissionChangedMessageDto extends RocketMessageDto {
     private String newMission;
 }
