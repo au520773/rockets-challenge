@@ -1,12 +1,10 @@
 package com.backend.challenge.rockets.model;
 
-import com.backend.challenge.rockets.messages.Message;
+import com.backend.challenge.rockets.exception.InternalServerErrorException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Getter
@@ -22,11 +20,12 @@ public enum MessageType {
 
     private final String messageType;
 
-    public static Optional<MessageType> of(String messageType) {
+    public static MessageType of(String messageType) {
         return MessageType
                 .stream()
                 .filter(type -> Objects.equals(type.getMessageType(), messageType))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new InternalServerErrorException("Unknown message type: " + messageType));
     }
 
     private static Stream<MessageType> stream() { return Stream.of(values()); }

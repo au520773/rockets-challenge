@@ -1,19 +1,17 @@
 package com.backend.challenge.rockets.service;
 
-import com.backend.challenge.rockets.messages.Message;
-import com.backend.challenge.rockets.repository.MessageProducer;
+import com.backend.challenge.rockets.model.Message;
+import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MessageProducerService {
 
-    private final MessageProducer messageProducer;
+    private final KafkaTemplate<String, Message> template;
 
-    public MessageProducerService(MessageProducer messageProducer) {
-        this.messageProducer = messageProducer;
-    }
-
-    public void addRocket(Message message) {
-        this.messageProducer.addMessage(message);
+    public void addMessage(Message message) {
+        this.template.send("rockets", message);
     }
 }

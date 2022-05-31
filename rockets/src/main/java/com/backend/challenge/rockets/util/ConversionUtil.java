@@ -1,12 +1,7 @@
-package com.backend.challenge.rockets.config;
+package com.backend.challenge.rockets.util;
 
-import com.backend.challenge.rockets.messages.Message;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.common.errors.SerializationException;
-
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class ConversionUtil {

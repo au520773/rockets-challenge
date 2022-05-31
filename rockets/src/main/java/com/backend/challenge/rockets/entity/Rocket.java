@@ -1,4 +1,4 @@
-package com.backend.challenge.rockets.model;
+package com.backend.challenge.rockets.entity;
 
 import lombok.*;
 import javax.persistence.Column;

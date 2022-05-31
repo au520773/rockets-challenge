@@ -1,9 +1,8 @@
 package com.backend.challenge.rockets.repository;
 
-import com.backend.challenge.rockets.model.Rocket;
+import com.backend.challenge.rockets.entity.Rocket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.Optional;
 
 public interface RocketsRepository extends JpaRepository<Rocket, String> {

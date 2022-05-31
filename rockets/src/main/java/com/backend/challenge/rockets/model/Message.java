@@ -1,4 +1,4 @@
-package com.backend.challenge.rockets.messages;
+package com.backend.challenge.rockets.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
