@@ -3,8 +3,8 @@ package com.backend.challenge.rockets.service;
 import com.backend.challenge.rockets.util.ConversionUtil;
 import com.backend.challenge.rockets.exception.InternalServerErrorException;
 import com.backend.challenge.rockets.dto.MessageDto;
-import com.backend.challenge.rockets.dto.RocketExplodedMessageDtoDto;
-import com.backend.challenge.rockets.dto.RocketLaunchedMessageDtoDto;
+import com.backend.challenge.rockets.dto.RocketExplodedMessageDto;
+import com.backend.challenge.rockets.dto.RocketLaunchedMessageDto;
 import com.backend.challenge.rockets.dto.RocketMissionChangedMessageDto;
 import com.backend.challenge.rockets.dto.RocketSpeedChangedMessageDto;
 import com.backend.challenge.rockets.dto.MessageType;
@@ -48,7 +48,7 @@ public class MessageConsumerService {
     }
 
     private void handleRocketLaunch(MessageDto messageDto) {
-        RocketLaunchedMessageDtoDto rocketLaunchedMessageDto = (RocketLaunchedMessageDtoDto) messageDto.getMessage();
+        RocketLaunchedMessageDto rocketLaunchedMessageDto = (RocketLaunchedMessageDto) messageDto.getMessage();
 
         Rocket rocket = Rocket.builder()
                 .channel(messageDto.getMetadata().getChannel())
@@ -97,7 +97,7 @@ public class MessageConsumerService {
     }
 
     private void handleRocketExplosion(MessageDto messageDto) {
-        RocketExplodedMessageDtoDto rocketExplodedMessageDto = (RocketExplodedMessageDtoDto) messageDto.getMessage();
+        RocketExplodedMessageDto rocketExplodedMessageDto = (RocketExplodedMessageDto) messageDto.getMessage();
 
         log.info("Explosion of rocket {}", messageDto.getMetadata().getChannel());
 
