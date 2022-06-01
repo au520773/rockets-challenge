@@ -46,4 +46,4 @@ Run test program with http against port 8080.
 | /rockets/{channel}     | GET      | Fetches a single rocket from its channel                                                                                   |
 | /h2-console            | GET      | Run in browser in order to inspect and query db.<br/> Login credentials are listed in application.properties project file. |
 
-<sup>1)<sup> optional sortBy query parameter allows for sorting based on rocket properties. Always orting in ascending order, example: /rockets?sortBy=speed
+<sup>1)<sup> optional sortBy query parameter allows for sorting based on rocket properties. Always sorting in ascending order, example: /rockets?sortBy=speed
